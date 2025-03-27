@@ -1,0 +1,70 @@
+---
+title: "Profitability vs Sales Dashboard"
+author: "Dao Dang"
+format: dashboard
+theme: solar
+---
+
+```{r}
+library(lessR)
+style(suggest=FALSE, quiet=TRUE)  # turn off suggestions and text output
+style(lab_cex=1.6, axis_cex=1.3)  # enlarge axis labels and value labels
+```
+
+```{r}
+library(openxlsx)
+```
+
+```{r echo=FALSE}
+
+d <- Read("https://web.pdx.edu/~gerbing/data/Superstore.xlsx")
+
+```
+
+## Row {height="20%"}
+
+::: {.valuebox icon="caret-right-fill" color="info" style="color: gray"}
+**Total Sales**
+
+`r d$Sale |> sum() |> round(digits=0) |> prettyNum(big.mark=",")`
+:::
+
+::: {.valuebox icon="caret-right-fill" color="secondary" style="color: pink"}
+**Total Profit**
+
+`r d$Profit |> sum() |> round(digits=0) |> prettyNum(big.mark=",")`
+:::
+
+::: {.valuebox icon="caret-right-fill" color="success" style="color: blue"}
+**Number of Customers**
+
+`r length(unique(d$Customer.Name))`
+:::
+
+## Row {height="20%"}
+
+::: {.card title="Total Sales"}
+Chairs and Phones are products have the highest total sales with 14% while Fasteners are products had the lowest sold.
+:::
+
+::: {.card title="Total Profits"}
+Copiers has the highest profit even it got 6% of total sales. However, one thing we need to concern and investigate more is Tables and Bookcases are products that we got negative profit.
+:::
+
+::: {.card title="Interpret"}
+Chairs and Phones are products have the highest total sales with 14% while Fasteners has the lowest sold. Copiers has the highest profit even it got 6% of total sales. However, one thing we need to concern and investigate more is Tables and Bookcases are products that we got negative profit.
+:::
+
+## Row {height="59%"}
+
+```{r}
+BarChart(SubCategory, Sales, stat="sum", rotate_x = 90)
+```
+
+```{r}
+BarChart(SubCategory, Profit, stat="sum", rotate_x = 90)
+```
+
+```{r}
+Plot(Sales, Profit)
+```
